@@ -5,24 +5,6 @@
  */
 $(function(){
 
-  // const tweetData = {
-  //   "user": {
-  //     "name": "Newton",
-  //     "avatars": {
-  //       "small":   "https://vanillicon.com/788e533873e80d2002fa14e1412b4188_50.png",
-  //       "regular": "https://vanillicon.com/788e533873e80d2002fa14e1412b4188.png",
-  //       "large":   "https://vanillicon.com/788e533873e80d2002fa14e1412b4188_200.png"
-  //     },
-  //     "handle": "@SirIsaac"
-  //   },
-  //   "content": {
-  //     "text": "If I have seen further it is by standing on the shoulders of giants"
-  //   },
-  //   "created_at": 1461116232227
-  // }
-
-
-
   const data = [
     {
       "user": {
@@ -106,6 +88,38 @@ $(function(){
     });
   }
 
-  renderTweets(data);
+  // renderTweets(data);
+
+  $(".new-tweet form").on('submit', function(event) {
+    event.preventDefault();
+    $.ajax({
+      url: '/tweets',
+      method: 'POST',
+      success: function (morePostsHtml) {
+        console.log('Success: ', morePostsHtml);
+        $button.replaceWith(morePostsHtml);
+      },
+      data: $(this).serialize()
+    });
+  });
+
+  function  loadTweets () {
+    $.ajax({
+      url: '/tweets',
+      method: 'GET',
+      dataType: 'json',
+      success: function (stuff) {
+        renderTweets(stuff)
+      }
+    });
+  }
+  loadTweets();
+
+  // $(".new-tweet form").on('submit', function(event) {
+  //   loadTweets();
+  // });
+
+
+
 
 });
