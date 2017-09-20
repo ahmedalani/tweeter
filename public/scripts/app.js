@@ -79,9 +79,10 @@ $(function(){
         <p>${tweet.user.handle}</p>
       </header>
     `);
+
     $newTweet.append($header);
 
-    let $content = $(`<div>${tweet.content.text}</div>`).addClass("content");
+    let $content = $(`<div></div>`).text(tweet.content.text).addClass("content");
     $newTweet.append($content);
 
     let $footer = $(`
