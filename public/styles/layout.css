@@ -31,5 +31,5 @@ main {
   padding: 140px 20px 0;
   width: 450px;
   background: white;
-  height: 100vh;
+  /*height: auto;*/
 }

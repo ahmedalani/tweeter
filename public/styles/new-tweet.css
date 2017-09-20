@@ -33,14 +33,14 @@ input {
   border: 1px solid #cccccc;
 }
 
-.posted-tweets div.entire-tweet {
+.posted-tweets article.entire-tweet {
   margin-top: 20px;
   background-color: white;
   border: 1px solid #cccccc;
   border-radius: 5px;
   opacity: 0.75;
 }
-.posted-tweets div.entire-tweet:hover {
+.posted-tweets article.entire-tweet:hover {
   margin-top: 20px;
   background-color: white;
   border: 1px solid #9c9c9c;
@@ -63,13 +63,17 @@ input {
   flex-grow: 1;
 }
 
+.posted-tweets header p {
+  padding-right: 5px;
+}
+
 .posted-tweets header img {
   height: 75px;
   width: 75px;
   margin-right: 10px;
 }
 
-.posted-tweets article {
+.posted-tweets div.content {
   padding: 50px;
 }
 
@@ -100,9 +104,10 @@ input {
   padding-right: 15px;
   color: #00a087;
 }
-.posted-tweets div.entire-tweet:hover footer div.tweet-actions {
+.posted-tweets article.entire-tweet:hover footer div.tweet-actions {
   opacity: 1;
 }
+
 
 
 
