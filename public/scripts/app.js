@@ -66,10 +66,10 @@ $(function(){
 
     let $content = $(`<div></div>`).text(tweet.content.text).addClass("content");
     $newTweet.append($content);
-
+    let $time = new Date(tweet.created_at);
     let $footer = $(`
       <footer>
-        <div class="time-stamp"><a href="#">${tweet.created_at}</a></div>
+        <div class="time-stamp"><a href="#">${$time.toLocaleString()}</a></div>
         <div class="tweet-actions">
           <i class="fa fa-flag" aria-hidden="true"></i>
           <i class="fa fa-retweet" aria-hidden="true"></i>
@@ -84,23 +84,44 @@ $(function(){
   function renderTweets (tweetsArray) {
     tweetsArray.forEach((tweet) => {
       let $tweetToAppend = createtweetElement(tweet);
-      $(".posted-tweets").append($tweetToAppend);
+      $(".posted-tweets").prepend($tweetToAppend);
     });
   }
 
-  // renderTweets(data);
 
   $(".new-tweet form").on('submit', function(event) {
     event.preventDefault();
-    $.ajax({
-      url: '/tweets',
-      method: 'POST',
-      success: function (morePostsHtml) {
-        console.log('Success: ', morePostsHtml);
-        $button.replaceWith(morePostsHtml);
-      },
-      data: $(this).serialize()
-    });
+    let $textData = $(".new-tweet textarea").val();
+    if ($textData.length > 140) {
+      $(".new-tweet form").after("<p class='error'>tweet is too long</p>");
+      $(".error").fadeIn().fadeOut(4000);
+      return;
+    }
+    if ($textData === '') {
+      $(".new-tweet form").after("<p class='error'>Please type a text to tweet</p>");
+      $(".error").fadeIn().fadeOut(4000);
+      return;
+    }
+    if ($textData === null) {
+      $(".new-tweet form").after("<p class='error'>INVALID ENTRY</p>");
+      $(".error").fadeIn().fadeOut(4000);
+      return;
+    }
+    else {
+      $.ajax({
+        url: '/tweets',
+        method: 'POST',
+        data: $(".new-tweet form").serialize(),
+        success: function (typedText) {
+          loadTweets(typedText);
+        },
+        error: function(err){
+          console.log("there was some error:"+err);
+        }
+      });
+      $(".new-tweet textarea").val('');
+      return;
+    }
   });
 
   function  loadTweets () {
@@ -110,11 +131,19 @@ $(function(){
       dataType: 'json',
       success: function (stuff) {
         renderTweets(stuff)
+      },
+      error: function(err){
+        console.log("there was some error:"+err);
       }
     });
   }
   loadTweets();
 
+  $("#nav-bar .compose").on("click", function (event){
+    event.preventDefault();
+    $(".new-tweet").slideToggle();
+    $(".new-tweet textarea").select();
+  });
   // $(".new-tweet form").on('submit', function(event) {
   //   loadTweets();
   // });

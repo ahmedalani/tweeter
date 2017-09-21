@@ -74,7 +74,8 @@ input {
 }
 
 .posted-tweets div.content {
-  padding: 50px;
+  padding: 30px;
+  word-wrap: break-word
 }
 
 .posted-tweets footer {
@@ -108,7 +109,9 @@ input {
   opacity: 1;
 }
 
-
+.error {
+  color: red;
+}
 
 
 
