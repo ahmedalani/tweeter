@@ -97,13 +97,8 @@ $(function(){
       $(".error").fadeIn().fadeOut(4000);
       return;
     }
-    if ($textData === '') {
+    if ($textData === '' || $textData === null) {
       $(".new-tweet form").after("<p class='error'>Please type a text to tweet</p>");
-      $(".error").fadeIn().fadeOut(4000);
-      return;
-    }
-    if ($textData === null) {
-      $(".new-tweet form").after("<p class='error'>INVALID ENTRY</p>");
       $(".error").fadeIn().fadeOut(4000);
       return;
     }
@@ -144,11 +139,5 @@ $(function(){
     $(".new-tweet").slideToggle();
     $(".new-tweet textarea").select();
   });
-  // $(".new-tweet form").on('submit', function(event) {
-  //   loadTweets();
-  // });
-
-
-
 
 });
