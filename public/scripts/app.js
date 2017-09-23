@@ -3,6 +3,7 @@
  * jQuery is already loaded
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
+
 $(function() {
 
 
@@ -43,7 +44,6 @@ $(function() {
   //     $(".posted-tweets").prepend($tweetToAppend);
   //   });
   // }
-
 
 
 
@@ -113,7 +113,7 @@ $(function() {
           ${tweet.content.text}
         </div>
         <footer>
-         <div class="time-stamp"><a href="#">${new Date(tweet.created_at).toLocaleString()}</a></div>
+         <div class="time-stamp"><a href="#">${moment(tweet.created_at).fromNow()}</a></div>
          <div class="tweet-actions">
            <i class="fa fa-flag" aria-hidden="true"></i>
            <i class="fa fa-retweet" aria-hidden="true"></i>
