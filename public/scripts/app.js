@@ -5,42 +5,49 @@
  */
 $(function() {
 
-  function  createtweetElement (tweet) {
-    let $newTweet = $("<article>").addClass("entire-tweet");
-    let $header = $(`
-      <header>
-        <img src="${tweet.user.avatars ? tweet.user.avatars.small : ""}">
-        <h1>${tweet.user.name}</h1>
-        <p>${tweet.user.handle}</p>
-      </header>
-    `);
 
-    $newTweet.append($header);
 
-    let $content = $(`<div></div>`).text(tweet.content.text).addClass("content");
-    $newTweet.append($content);
-    let $time = new Date(tweet.created_at);
-    let $footer = $(`
-      <footer>
-        <div class="time-stamp"><a href="#">${$time.toLocaleString()}</a></div>
-        <div class="tweet-actions">
-          <i class="fa fa-flag" aria-hidden="true"></i>
-          <i class="fa fa-retweet" aria-hidden="true"></i>
-          <i class="fa fa-heart" aria-hidden="true"></i>
-        </div>
-      </footer>
-    `);
-    $newTweet.append($footer);
-    return $newTweet;
-  }
-  function renderTweets (tweetsArray) {
-    $(".posted-tweets").empty()
-    tweetsArray.forEach((tweet) => {
-      let $tweetToAppend = createtweetElement(tweet);
+  // function  createtweetElement (tweet) {
+  //   let $newTweet = $("<article>").addClass("entire-tweet");
+  //   let $header = $(`
+  //     <header>
+  //       <img src="${tweet.user.avatars ? tweet.user.avatars.small : ""}">
+  //       <h1>${tweet.user.name}</h1>
+  //       <p>${tweet.user.handle}</p>
+  //     </header>
+  //   `);
 
-      $(".posted-tweets").prepend($tweetToAppend);
-    });
-  }
+  //   $newTweet.append($header);
+
+  //   let $content = $(`<div></div>`).text(tweet.content.text).addClass("content");
+  //   $newTweet.append($content);
+  //   let $time = new Date(tweet.created_at);
+  //   let $footer = $(`
+  //     <footer>
+  //       <div class="time-stamp"><a href="#">${$time.toLocaleString()}</a></div>
+  //       <div class="tweet-actions">
+  //         <i class="fa fa-flag" aria-hidden="true"></i>
+  //         <i class="fa fa-retweet" aria-hidden="true"></i>
+  //         <i class="fa fa-heart" aria-hidden="true"></i>
+  //       </div>
+  //     </footer>
+  //   `);
+  //   $newTweet.append($footer);
+  //   return $newTweet;
+  // }
+  // function renderTweets (tweetsArray) {
+  //   $(".posted-tweets").empty()
+  //   tweetsArray.forEach((tweet) => {
+  //     let $tweetToAppend = createtweetElement(tweet);
+
+  //     $(".posted-tweets").prepend($tweetToAppend);
+  //   });
+  // }
+
+
+
+
+
 
 
   $(".new-tweet form").on('submit', function(event) {
@@ -87,6 +94,50 @@ $(function() {
     });
   }
   loadTweets();
+
+  function renderTweets (tweetsArray) {
+    $(".posted-tweets")
+    .empty()
+    .append(tweetsArray.map(createtweetElement).reverse());
+  }
+
+  function createtweetElement (tweet) {
+    return $(safeTemplate`
+      <article class="entire-tweet">
+        <header>
+          <img src="${(tweet.user.avatars || {}).small}">
+          <h1>${tweet.user.name}</h1>
+          <p>${tweet.user.handle}</p>
+        </header>
+        <div class="content">
+          ${tweet.content.text}
+        </div>
+        <footer>
+         <div class="time-stamp"><a href="#">${new Date(tweet.created_at).toLocaleString()}</a></div>
+         <div class="tweet-actions">
+           <i class="fa fa-flag" aria-hidden="true"></i>
+           <i class="fa fa-retweet" aria-hidden="true"></i>
+           <i class="fa fa-heart" aria-hidden="true"></i>
+         </div>
+       </footer>
+      </article>
+    `);
+  }
+
+
+  function safeTemplate(strings, ...replacements) {
+    const result = strings.map((s, i) => {
+      return s + safeText(replacements[i] || "")
+    });
+    return result.join('');
+  }
+  function safeText(text) {
+    const div = document.createElement("div");
+    const textNode = document.createTextNode(text);
+    div.appendChild(textNode);
+    return div.innerHTML;
+  }
+
 
   $(".new-tweet").hide();
   $("#nav-bar .compose").on("click", function (event){
